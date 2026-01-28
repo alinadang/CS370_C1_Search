@@ -514,7 +514,25 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    foodList = foodGrid.asList()
+    if not foodList:
+        return 0
+
+    def distCache(a, b): #helper function: cache if already accounted for
+        if (a, b) in problem.heuristicInfo:
+            return problem.heuristicInfo[(a, b)]
+        dist = mazeDistance(a, b, problem.startingGameState)
+        problem.heuristicInfo[(a, b)] = dist
+        problem.heuristicInfo[(b, a)] = dist
+
+        return dist
+    
+    maxd = 0
+    for f in foodList:
+        d = distCache(position, f)
+        if d > maxd:
+            maxd = d
+    return maxd
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
