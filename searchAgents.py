@@ -397,30 +397,8 @@ def cornersHeuristic(state, problem):
     def manhattan(a, b):
         return abs(a[0] - b[0]) + abs(a[1] - b[1])
     
-    smallestdist = min(manhattan(position, c) for c in unvisited)
-
-    if len(unvisited) == 1:
-        return smallestdist
-    
-    cost = 0
-    nodes = list(unvisited)
-    connected = {nodes[0]}
-    notconnected = set(nodes[1:])
-
-    while notconnected:
-        bestcost = None
-        bestnode = None
-        for x in connected:
-            for y in notconnected:
-                z = manhattan(x, y)
-                if bestcost is None or z < bestcost:
-                    bestcost = z
-                    bestnode = y
-        cost += bestcost
-        connected.add(bestnode)
-        notconnected.remove(bestnode)
-
-    return smallestdist + cost
+    dist = max(manhattan(position, c) for c in unvisited)
+    return dist
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
